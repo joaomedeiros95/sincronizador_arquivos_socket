@@ -1,2 +1,2 @@
-# sincronizador_arquivos_socket
+# Sincronizador Arquivos Socket
 Sincronizador de Arquivos entre máquinas usando Socket
