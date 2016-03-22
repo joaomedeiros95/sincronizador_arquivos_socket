@@ -20,9 +20,13 @@ public class SocketClient {
 	
 	private Socket socket;
 	
-	public SocketClient(InetAddress ip, int port) throws IOException {
+	public SocketClient(String ip, int port) throws IOException {
         socket = new Socket(ip, port);
     }
+	
+	public SocketClient(InetAddress ip, int port) throws IOException {
+		socket = new Socket(ip, port);
+	}
 
     public void println(String message) throws IOException {
         PrintWriter writer;
