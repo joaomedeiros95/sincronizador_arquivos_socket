@@ -15,7 +15,7 @@ public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
-	private String usuario;
+	private String nome;
 	private String email;
 	private String senha;
 	private Date dataCadastro;
@@ -26,11 +26,11 @@ public class Usuario implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getUsuario() {
-		return usuario;
+	public String getNome() {
+		return nome;
 	}
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 	public String getEmail() {
 		return email;
