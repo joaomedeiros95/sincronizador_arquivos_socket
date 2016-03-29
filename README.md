@@ -19,9 +19,9 @@ CREATE DATABASE sincronizador
 ```
 
 ```
-CREATE TABLE "Usuario"
+CREATE TABLE usuario
 (
-  id_usuario serial NOT NULL,
+  id_usuario integer NOT NULL DEFAULT nextval('"Usuario_id_usuario_seq"'::regclass),
   nome character varying NOT NULL,
   email character varying NOT NULL,
   senha character varying NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE "Usuario"
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE "Usuario"
+ALTER TABLE usuario
   OWNER TO sincronizador;
 ```
 
