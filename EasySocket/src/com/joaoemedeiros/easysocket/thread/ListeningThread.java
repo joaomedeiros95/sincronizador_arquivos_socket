@@ -37,7 +37,6 @@ public class ListeningThread extends Thread {
                 socket = serverSocket.accept();
                 new ConnectionThread(socket, socketServer).start();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

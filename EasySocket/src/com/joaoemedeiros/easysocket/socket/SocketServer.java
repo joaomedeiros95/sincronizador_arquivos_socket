@@ -6,6 +6,7 @@ package com.joaoemedeiros.easysocket.socket;
 import java.io.IOException;
 import java.net.ServerSocket;
 
+import com.joaoemedeiros.easysocket.exception.EasySocketException;
 import com.joaoemedeiros.easysocket.handler.MessageHandler;
 import com.joaoemedeiros.easysocket.thread.ListeningThread;
 
@@ -18,15 +19,14 @@ public class SocketServer {
     private ListeningThread listeningThread;
     private MessageHandler messageHandler;
 
-    public SocketServer(int port, MessageHandler handler) {
+    public SocketServer(int port, MessageHandler handler) throws EasySocketException {
         messageHandler = handler;
         try {
             serverSocket = new ServerSocket(port);
             listeningThread = new ListeningThread(this, serverSocket);
             listeningThread.start();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        	throw new EasySocketException(e.getMessage());
         }
     }
     

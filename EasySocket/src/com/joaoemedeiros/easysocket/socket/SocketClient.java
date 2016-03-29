@@ -12,6 +12,8 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import com.joaoemedeiros.easysocket.exception.EasySocketException;
+
 /**
  * @author João Medeiros
  *
@@ -20,31 +22,52 @@ public class SocketClient {
 	
 	private Socket socket;
 	
-	public SocketClient(String ip, int port) throws IOException {
-        socket = new Socket(ip, port);
+	public SocketClient(String ip, int port) throws EasySocketException {
+        try {
+			socket = new Socket(ip, port);
+		} catch (IOException e) {
+			throw new EasySocketException(e.getMessage());
+		}
     }
 	
-	public SocketClient(InetAddress ip, int port) throws IOException {
-		socket = new Socket(ip, port);
+	public SocketClient(InetAddress ip, int port) throws EasySocketException {
+		try {
+			socket = new Socket(ip, port);
+		} catch (IOException e) {
+			throw new EasySocketException(e.getMessage());
+		}
 	}
 
-    public void println(String message) throws IOException {
+    public void println(String message) throws EasySocketException {
         PrintWriter writer;
-	    writer = new PrintWriter(new OutputStreamWriter(
-	                             socket.getOutputStream()), true);
-	    writer.println(message);
+	    try {
+			writer = new PrintWriter(new OutputStreamWriter(
+			                         socket.getOutputStream()), true);
+			writer.println(message);
+		} catch (IOException e) {
+			throw new EasySocketException(e.getMessage());
+		}
     }
     
-    public void enviarObjeto(Object objeto) throws IOException {
-    	ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
-    	writer.writeObject(objeto);
+    public void enviarObjeto(Object objeto) throws EasySocketException {
+    	ObjectOutputStream writer;
+		try {
+			writer = new ObjectOutputStream(socket.getOutputStream());
+			writer.writeObject(objeto);
+		} catch (IOException e) {
+			throw new EasySocketException(e.getMessage());
+		}
     }
 
-    public String readLine() throws IOException {
+    public String readLine() throws EasySocketException {
         BufferedReader reader;
-        reader = new BufferedReader(new InputStreamReader(
-                                    socket.getInputStream()));
-        return reader.readLine();
+        try {
+			reader = new BufferedReader(new InputStreamReader(
+			                            socket.getInputStream()));
+			return reader.readLine();
+		} catch (IOException e) {
+			throw new EasySocketException(e.getMessage());
+		}
     }
 
 }
