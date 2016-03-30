@@ -6,6 +6,7 @@ package com.joaoemedeiros.easysocket.socket;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import com.joaoemedeiros.easysocket.exception.EasySocketException;
+import com.joaoemedeiros.easysocket.utils.Resposta;
 
 /**
  * @author João Medeiros
@@ -49,16 +51,6 @@ public class SocketClient {
 		}
     }
     
-    public void enviarObjeto(Object objeto) throws EasySocketException {
-    	ObjectOutputStream writer;
-		try {
-			writer = new ObjectOutputStream(socket.getOutputStream());
-			writer.writeObject(objeto);
-		} catch (IOException e) {
-			throw new EasySocketException(e.getMessage());
-		}
-    }
-
     public String readLine() throws EasySocketException {
         BufferedReader reader;
         try {
@@ -69,5 +61,24 @@ public class SocketClient {
 			throw new EasySocketException(e.getMessage());
 		}
     }
+    
+    public Resposta readObject() throws EasySocketException {
+    	ObjectInputStream reader;
+        try {
+            reader = new ObjectInputStream(socket.getInputStream());
+            return (Resposta) reader.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+        	throw new EasySocketException(e.getMessage());
+        } 
+    }
 
+    public void enviarObjeto(Object objeto) throws EasySocketException {
+    	ObjectOutputStream writer;
+    	try {
+    		writer = new ObjectOutputStream(socket.getOutputStream());
+    		writer.writeObject(objeto);
+    	} catch (IOException e) {
+    		throw new EasySocketException(e.getMessage());
+    	}
+    }
 }
