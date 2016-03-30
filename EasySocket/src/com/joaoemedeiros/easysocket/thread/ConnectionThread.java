@@ -9,6 +9,7 @@ import java.net.Socket;
 
 import com.joaoemedeiros.easysocket.handler.Connection;
 import com.joaoemedeiros.easysocket.socket.SocketServer;
+import com.joaoemedeiros.easysocket.utils.Solicitacao;
 
 /**
  * @author joao
@@ -39,8 +40,8 @@ public class ConnectionThread extends Thread {
             ObjectInputStream reader;
             try {
                 reader = new ObjectInputStream(socket.getInputStream());
-                Object objeto = reader.readObject();
-                socketServer.getMessageHandler().onReceive(connection, objeto);
+                Solicitacao solicitacao = (Solicitacao) reader.readObject();
+                socketServer.getMessageHandler().onReceive(connection, solicitacao);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {

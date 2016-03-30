@@ -1,12 +1,13 @@
 /**
  * 
  */
-package br.ufrn.sincronizador.server;
+package br.ufrn.servidor.server;
 
 import com.joaoemedeiros.easysocket.exception.EasySocketException;
 import com.joaoemedeiros.easysocket.socket.SocketServer;
+import com.joaoemedeiros.easysocket.utils.Services;
 
-import br.ufrn.sincronizador.server.handler.UsuarioHandler;
+import br.ufrn.servidor.server.handler.UsuarioHandler;
 
 /**
  * @author joao
@@ -15,7 +16,7 @@ import br.ufrn.sincronizador.server.handler.UsuarioHandler;
 public class Servidor {
 	
 	public static void main(String[] args) throws EasySocketException {
-		SocketServer server = new SocketServer(5665, new UsuarioHandler());
+		SocketServer server = new SocketServer(Services.LOGINSERVICE, new UsuarioHandler());
 	}
 
 }

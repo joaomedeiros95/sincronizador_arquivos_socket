@@ -1,16 +1,17 @@
 /**
  * 
  */
-package br.ufrn.sincronizador.dao;
+package br.ufrn.servidor.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-import br.ufrn.sincronizador.dominio.Usuario;
-import br.ufrn.sincronizador.utils.ConnectionFactory;
+import br.ufrn.servidor.dominio.Usuario;
+import br.ufrn.servidor.utils.ConnectionFactory;
 
 /**
  * @author joao
@@ -37,6 +38,30 @@ public class UsuarioDAO {
 		System.out.println("Usuário " + usuario.getEmail() + " criado!");
 		
 		conexao.close();
+	}
+	
+	/**
+	 * Verifica se o usuário tem acesso ao sistema
+	 * @param email
+	 * @param senha
+	 * @return  true -> se os dados de login foram dados corretamente
+	 * 			false -> caso contrário
+	 * @throws SQLException 
+	 */
+	public boolean verificarLogin(String email, String senha) throws SQLException {
+		Connection conexao = ConnectionFactory.getConexao();
+		String sql = "SELECT email FROM usuario " 
+					+ "WHERE email = ? AND senha = ?";
+		
+		PreparedStatement stmt = conexao.prepareStatement(sql);
+		stmt.setString(1, email);
+		stmt.setString(2, senha);
+		
+		ResultSet set = stmt.executeQuery();
+		stmt.close();
+		conexao.close();
+		
+		return set.next();
 	}
 
 }

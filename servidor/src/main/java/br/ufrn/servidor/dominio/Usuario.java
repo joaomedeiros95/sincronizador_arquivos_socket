@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.ufrn.sincronizador.dominio;
+package br.ufrn.servidor.dominio;
 
 import java.io.Serializable;
 import java.util.Date;

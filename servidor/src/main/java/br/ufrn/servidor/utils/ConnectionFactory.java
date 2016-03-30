@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.ufrn.sincronizador.utils;
+package br.ufrn.servidor.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
