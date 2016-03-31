@@ -3,6 +3,8 @@
  */
 package br.ufrn.sincronizador.operacoes;
 
+import java.util.Map;
+
 import com.joaoemedeiros.easysocket.exception.EasySocketException;
 import com.joaoemedeiros.easysocket.socket.SocketClient;
 import com.joaoemedeiros.easysocket.utils.Resposta;
@@ -14,7 +16,8 @@ import com.joaoemedeiros.easysocket.utils.Solicitacao;
  */
 public abstract class Operacao {
 
-	public abstract void executar(SocketClient client, Integer subOperacao, Object objeto) throws EasySocketException;
+	public abstract void executar(SocketClient client, Integer subOperacao) throws EasySocketException;
+	public abstract Map<String, Integer> getSubOperacoes();
 	
 	protected void enviar(SocketClient client, Solicitacao solicitacao) throws EasySocketException {
 		client.enviarObjeto(solicitacao);

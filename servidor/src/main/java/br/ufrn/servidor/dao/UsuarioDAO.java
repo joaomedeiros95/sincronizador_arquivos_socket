@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-import br.ufrn.servidor.dominio.Usuario;
+import br.ufrn.pd.dominio.Usuario;
 import br.ufrn.servidor.utils.ConnectionFactory;
 
 /**
@@ -50,18 +50,24 @@ public class UsuarioDAO {
 	 */
 	public boolean verificarLogin(String email, String senha) throws SQLException {
 		Connection conexao = ConnectionFactory.getConexao();
-		String sql = "SELECT email FROM usuario " 
+		PreparedStatement stmt = null;
+		try {
+			String sql = "SELECT email FROM usuario " 
 					+ "WHERE email = ? AND senha = ?";
-		
-		PreparedStatement stmt = conexao.prepareStatement(sql);
-		stmt.setString(1, email);
-		stmt.setString(2, senha);
-		
-		ResultSet set = stmt.executeQuery();
-		stmt.close();
-		conexao.close();
-		
-		return set.next();
+			
+			stmt = conexao.prepareStatement(sql);
+			stmt.setString(1, email);
+			stmt.setString(2, senha);
+			
+			ResultSet set = stmt.executeQuery();
+			
+			return set.next();
+		} finally {
+			if(stmt != null) {
+				stmt.close();
+			}
+			conexao.close();
+		}
 	}
 
 }

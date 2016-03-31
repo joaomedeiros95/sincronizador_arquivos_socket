@@ -15,6 +15,7 @@ import br.ufrn.servidor.server.handler.UsuarioHandler;
  */
 public class Servidor {
 	
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws EasySocketException {
 		SocketServer server = new SocketServer(Services.LOGINSERVICE, new UsuarioHandler());
 	}

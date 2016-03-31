@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.ufrn.servidor.dominio;
+package br.ufrn.pd.dominio;
 
 import java.io.Serializable;
 import java.util.Date;

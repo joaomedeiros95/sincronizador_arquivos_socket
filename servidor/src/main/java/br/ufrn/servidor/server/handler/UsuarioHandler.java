@@ -11,8 +11,8 @@ import com.joaoemedeiros.easysocket.utils.Operations;
 import com.joaoemedeiros.easysocket.utils.Resposta;
 import com.joaoemedeiros.easysocket.utils.Solicitacao;
 
+import br.ufrn.pd.dominio.Usuario;
 import br.ufrn.servidor.dao.UsuarioDAO;
-import br.ufrn.servidor.dominio.Usuario;
 
 /**
  * @author joao

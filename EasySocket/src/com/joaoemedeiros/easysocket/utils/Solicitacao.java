@@ -3,12 +3,16 @@
  */
 package com.joaoemedeiros.easysocket.utils;
 
+import java.io.Serializable;
+
 /**
  * @author joao
  *
  */
-public class Solicitacao {
+public class Solicitacao implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	private String operacao;
 	
 	private Object objeto;

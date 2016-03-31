@@ -29,5 +29,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/servidor/lib/easysocket.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ClassesDominio"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
