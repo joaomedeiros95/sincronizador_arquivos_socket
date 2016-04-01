@@ -22,14 +22,16 @@ public class Cliente {
 	
 	private static final String SERVIDORLOGIN = "localhost";
 	private static Map<String, Operacao> operacoes;
-	private static SocketClient loginSocket;
 	private static boolean finish;
+	
+	private static SocketClient loginSocket;
 	
 	public static void main(String[] args) {
 		construirOperacoes();
 		
 		try {
 			loginSocket = new SocketClient(SERVIDORLOGIN, Services.LOGINSERVICE);
+			
 			
 			while(!finish) {
 				solicitarOperacao();
@@ -59,13 +61,13 @@ public class Cliente {
 	}
 
 	private static void solicitarSubOperacao(String entrada) throws EasySocketException {
-		System.out.println("Sub Operações Disponíveis: ");
 		Operacao operacao = operacoes.get(entrada);
-		
 		if(operacao == null) {
 			System.out.println("Digite uma operação válida");
 			return;
 		}
+		
+		System.out.println("Sub Operações Disponíveis: ");
 		
 		for(Map.Entry<String, Integer> op : operacao.getSubOperacoes().entrySet()) {
 			System.out.print("- " + op.getKey() + " ");

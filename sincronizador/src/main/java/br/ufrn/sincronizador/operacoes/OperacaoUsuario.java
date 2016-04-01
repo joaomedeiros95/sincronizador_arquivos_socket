@@ -34,6 +34,9 @@ public class OperacaoUsuario extends Operacao {
 		} else if (subOperacao == LOGAR) {
 			solicitacao.setOperacao(Operations.LOGIN);
 			solicitacao.setObjeto(logar());
+		} else {
+			System.out.println("Digite uma subOperação válida");
+			return;
 		}
 		
 		enviar(client, solicitacao);

@@ -39,6 +39,7 @@ public class Connection {
 		try {
 			writer = new ObjectOutputStream(socket.getOutputStream());
 			writer.writeObject(objeto);
+			writer.flush();
 		} catch (IOException e) {
 			throw new EasySocketException(e.getMessage());
 		}
