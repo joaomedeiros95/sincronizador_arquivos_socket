@@ -35,6 +35,35 @@ ALTER TABLE usuario
   OWNER TO sincronizador;
 ```
 
+```
+CREATE TABLE login_usuario
+(
+  id_login_usuario serial NOT NULL,
+  id_usuario integer,
+  ip character varying,
+  ultima_entrada timestamp without time zone,
+  mac character varying,
+  CONSTRAINT login_usuario_pkey PRIMARY KEY (id_login_usuario),
+  CONSTRAINT pk_usuario FOREIGN KEY (id_usuario)
+      REFERENCES usuario (id_usuario) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE login_usuario
+  OWNER TO sincronizador;
+
+-- Index: fki_pk_usuario
+
+-- DROP INDEX fki_pk_usuario;
+
+CREATE INDEX fki_pk_usuario
+  ON login_usuario
+  USING btree
+  (id_usuario);
+```
+
 ## Informações para o JDBC
 - Driver: org.postgresql.Driver
 - Link: jdbc:postgresql://localhost/sincronizador
