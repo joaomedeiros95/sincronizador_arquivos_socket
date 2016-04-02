@@ -26,7 +26,8 @@ CREATE TABLE usuario
   email character varying NOT NULL,
   senha character varying NOT NULL,
   data_cadastrado date NOT NULL,
-  CONSTRAINT "Usuario_pkey" PRIMARY KEY (id_usuario)
+  CONSTRAINT "Usuario_pkey" PRIMARY KEY (id_usuario),
+  CONSTRAINT usuario_email_key UNIQUE (email)
 )
 WITH (
   OIDS=FALSE
