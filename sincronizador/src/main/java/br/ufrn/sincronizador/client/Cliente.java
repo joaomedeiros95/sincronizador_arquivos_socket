@@ -12,7 +12,9 @@ import com.joaoemedeiros.easysocket.utils.Services;
 
 import br.ufrn.sincronizador.input.StringInput;
 import br.ufrn.sincronizador.operacoes.Operacao;
+import br.ufrn.sincronizador.operacoes.OperacaoArquivo;
 import br.ufrn.sincronizador.operacoes.OperacaoUsuario;
+import br.ufrn.sincronizador.server.Servidor;
 
 /**
  * @author joao
@@ -21,17 +23,20 @@ import br.ufrn.sincronizador.operacoes.OperacaoUsuario;
 public class Cliente {
 	
 	private static final String SERVIDORLOGIN = "localhost";
+	private static final String SERVIDORSYNC = "localhost";
 	private static Map<String, Operacao> operacoes;
 	private static boolean finish;
 	
 	private static SocketClient loginSocket;
+	private static SocketClient syncSocket;
 	
 	public static void main(String[] args) {
 		construirOperacoes();
 		
 		try {
+			Servidor.criarServidor();
 			loginSocket = new SocketClient(SERVIDORLOGIN, Services.LOGINSERVICE);
-			
+			syncSocket = new SocketClient(SERVIDORSYNC, Services.SYNCSERVICE);
 			
 			while(!finish) {
 				solicitarOperacao();
@@ -61,10 +66,18 @@ public class Cliente {
 	}
 
 	private static void solicitarSubOperacao(String entrada) throws EasySocketException {
+		SocketClient socket;
+		
 		Operacao operacao = operacoes.get(entrada);
 		if(operacao == null) {
 			System.out.println("Digite uma operação válida");
 			return;
+		}
+		
+		if(operacao instanceof OperacaoUsuario) {
+			socket = loginSocket;
+		} else {
+			socket = syncSocket;
 		}
 		
 		System.out.println("Sub Operações Disponíveis: ");
@@ -78,7 +91,7 @@ public class Cliente {
 		entrada = stringInput.receiveInput("Digite o identificador da operação:");
 		
 		Integer subOperacao = operacao.getSubOperacoes().get(entrada);
-		operacao.executar(loginSocket, subOperacao);
+		operacao.executar(socket, subOperacao);
 	}
 
 	/**
@@ -87,6 +100,7 @@ public class Cliente {
 	private static void construirOperacoes() {
 		operacoes = new HashMap<String, Operacao>();
 		operacoes.put("usuario", new OperacaoUsuario());
+		operacoes.put("arquivo", new OperacaoArquivo());
 	}
 
 }
