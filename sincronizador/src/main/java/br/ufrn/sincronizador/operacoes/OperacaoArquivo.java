@@ -13,10 +13,16 @@ import org.apache.commons.io.FileUtils;
 import com.joaoemedeiros.easysocket.exception.EasySocketException;
 import com.joaoemedeiros.easysocket.socket.SocketClient;
 import com.joaoemedeiros.easysocket.utils.Operations;
+import com.joaoemedeiros.easysocket.utils.Services;
 import com.joaoemedeiros.easysocket.utils.Solicitacao;
 
 import br.ufrn.pd.dominio.Arquivo;
+import br.ufrn.sincronizador.arquivos.ManipuladorArquivo;
+import br.ufrn.sincronizador.client.Cliente;
 import br.ufrn.sincronizador.input.StringInput;
+import br.ufrn.sincronizador.server.Servidor;
+import br.ufrn.sincronizador.server.handler.SincronizacaoHandler;
+import br.ufrn.sincronizador.sync.UDPUtils;
 
 /**
  * @author joao
@@ -25,6 +31,7 @@ import br.ufrn.sincronizador.input.StringInput;
 public class OperacaoArquivo extends Operacao {
 	
 	public static final Integer ENVIARARQUIVO = 1;
+	public static final Integer SINCRONIZAR = 2;
 	private StringInput input;
 
 	@Override
@@ -41,10 +48,19 @@ public class OperacaoArquivo extends Operacao {
 			}
 			
 			solicitacao.setObjeto(objeto);
+			
+			enviar(client, solicitacao);
+			imprimirResposta(client);
+		} else if (subOperacao == SINCRONIZAR) {
+			try {
+				UDPUtils.sendDatagram(ManipuladorArquivo.getString(), Cliente.MULTICASTSERVER, Services.MULTISERVICE, Cliente.getMultiSocket());
+			} catch (IOException e) {
+				System.out.println("Ocorreu um erro ao processar sua operação!");
+			}
+			
+			Servidor.criarServidor(Services.SYNCSERVICE, new SincronizacaoHandler());
 		}
 		
-		enviar(client, solicitacao);
-		imprimirResposta(client);
 	}
 
 	private Arquivo pegarArquivo() {
@@ -73,7 +89,7 @@ public class OperacaoArquivo extends Operacao {
 	@Override
 	public Map<String, Integer> getSubOperacoes() {
 		Map<String, Integer> subOperacoes = new HashMap<String, Integer>();
-		subOperacoes.put("enviar_arquivo", ENVIARARQUIVO);
+		subOperacoes.put("sincronizar", SINCRONIZAR);
 		
 		return subOperacoes;
 	}

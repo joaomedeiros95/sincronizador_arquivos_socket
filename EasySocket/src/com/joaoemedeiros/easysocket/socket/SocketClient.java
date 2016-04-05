@@ -82,4 +82,8 @@ public class SocketClient {
     		throw new EasySocketException(e.getMessage());
     	}
     }
+    
+    public void close() throws IOException {
+    	socket.close();
+    }
 }

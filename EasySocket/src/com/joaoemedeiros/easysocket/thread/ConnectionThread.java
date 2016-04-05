@@ -41,12 +41,15 @@ public class ConnectionThread extends Thread {
             try {
                 reader = new ObjectInputStream(socket.getInputStream());
                 Solicitacao solicitacao = (Solicitacao) reader.readObject();
+                System.out.println("Mensagem recebida do cliente " + socket.getInetAddress().getHostAddress());
                 socketServer.getMessageHandler().onReceive(connection, solicitacao);
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Cliente fechou a conexão repentinamente!");
+                stopRunning();
             } catch (ClassNotFoundException e) {
 				e.printStackTrace();
-			}
+				stopRunning();
+			} 
         }
     }
     

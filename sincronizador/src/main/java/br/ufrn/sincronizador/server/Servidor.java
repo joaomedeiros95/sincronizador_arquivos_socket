@@ -4,10 +4,8 @@
 package br.ufrn.sincronizador.server;
 
 import com.joaoemedeiros.easysocket.exception.EasySocketException;
+import com.joaoemedeiros.easysocket.handler.MessageHandler;
 import com.joaoemedeiros.easysocket.socket.SocketServer;
-import com.joaoemedeiros.easysocket.utils.Services;
-
-import br.ufrn.sincronizador.server.handler.SincronizacaoHandler;
 
 /**
  * @author joao
@@ -15,8 +13,8 @@ import br.ufrn.sincronizador.server.handler.SincronizacaoHandler;
  */
 public class Servidor {
 	
-	public static void criarServidor() throws EasySocketException {
-		new SocketServer(Services.SYNCSERVICE, new SincronizacaoHandler());
+	public static void criarServidor(Integer port, MessageHandler handler) throws EasySocketException {
+		new SocketServer(port, handler);
 	}
 
 }

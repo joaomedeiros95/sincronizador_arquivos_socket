@@ -38,5 +38,13 @@ public class ManipuladorArquivo {
 			file.createNewFile();
 		}
 	}
+	
+	public static void clearArquivo() throws IOException {
+		File file = new File(ARQUIVO);
+		if(file.isFile()) {
+			file.delete();
+			criarArquivo();
+		}
+	}
 
 }

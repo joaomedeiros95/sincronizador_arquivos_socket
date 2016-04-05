@@ -15,8 +15,9 @@ public class MulticastHandlerImpl extends MulticastHandler {
 
 	@Override
 	public void onReceive(MulticastSocket socket, Object objeto) {
-		// TODO Auto-generated method stub
+		String login = (String) objeto;
 		
+		System.out.println("Recebido por Multicast, ip: " + login);
 	}
 
 }

@@ -3,6 +3,7 @@
  */
 package br.ufrn.sincronizador.client;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,12 +12,12 @@ import com.joaoemedeiros.easysocket.socket.SocketClient;
 import com.joaoemedeiros.easysocket.socket.SocketMulticast;
 import com.joaoemedeiros.easysocket.utils.Services;
 
+import br.ufrn.sincronizador.arquivos.ManipuladorArquivo;
 import br.ufrn.sincronizador.client.handler.MulticastHandlerImpl;
 import br.ufrn.sincronizador.input.StringInput;
 import br.ufrn.sincronizador.operacoes.Operacao;
 import br.ufrn.sincronizador.operacoes.OperacaoArquivo;
 import br.ufrn.sincronizador.operacoes.OperacaoUsuario;
-import br.ufrn.sincronizador.server.Servidor;
 
 /**
  * @author joao
@@ -25,24 +26,27 @@ import br.ufrn.sincronizador.server.Servidor;
 public class Cliente {
 	
 	public static final String SERVIDORLOGIN = "localhost";
-	public static final String SERVIDORSYNC = "localhost";
 	public static final String MULTICASTSERVER = "239.0.0.1";
+	private static String IPSYNC; 
 	
 	private static Map<String, Operacao> operacoes;
 	private static boolean finish;
 	
 	private static SocketClient loginSocket;
-	private static SocketClient syncSocket;
 	private static SocketMulticast multiSocket;
 	
 	public static void main(String[] args) {
-		construirOperacoes();
+		construirOperacoesAntesLogin();
 		
 		try {
-			Servidor.criarServidor();
 			loginSocket = new SocketClient(SERVIDORLOGIN, Services.LOGINSERVICE);
-			syncSocket = new SocketClient(SERVIDORSYNC, Services.SYNCSERVICE);
-//			multiSocket = new SocketMulticast(MULTICASTSERVER, Services.MULTISERVICE, new MulticastHandlerImpl());
+			
+			while(!verificarLogin()) {
+				solicitarOperacao();
+			}
+			
+			construirOperacoesDepoisLogin();
+			multiSocket = new SocketMulticast(MULTICASTSERVER, Services.MULTISERVICE, new MulticastHandlerImpl());
 			
 			while(!finish) {
 				solicitarOperacao();
@@ -50,11 +54,26 @@ public class Cliente {
 			
 		} catch (EasySocketException e) {
 			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
-	private static void solicitarOperacao() throws EasySocketException {
-		System.out.println("Operações Disponíveis (use 'sair' para sair): ");
+	private static boolean verificarLogin() throws IOException {
+		ManipuladorArquivo.criarArquivo();
+		String email = ManipuladorArquivo.getString();
+		
+		if(email != null) {
+			System.out.println("Usuário " + email + " logado ao sistema!");
+			return true;
+		} else {
+			System.out.println("Prezado usuário, favor logue ao sistema ou crie uma conta!");
+			return false;
+		}
+	}
+
+	private static void solicitarOperacao() throws EasySocketException, IOException {
+		System.out.println("Operações Disponíveis (use 'sair' para sair ou 'deslogar' para deslogar): ");
 		for(Map.Entry<String, Operacao> operacao : operacoes.entrySet()) {
 			System.out.print("- " + operacao.getKey() + " ");
 		}
@@ -65,14 +84,16 @@ public class Cliente {
 		
 		if(entrada.equalsIgnoreCase("sair")) {
 			finish = true;
-			return;
+		} else if (entrada.equalsIgnoreCase("deslogar")) {
+			ManipuladorArquivo.clearArquivo();
+			finish = true;
 		} else {
 			solicitarSubOperacao(entrada);
 		}
 	}
 
 	private static void solicitarSubOperacao(String entrada) throws EasySocketException {
-		SocketClient socket;
+		SocketClient socket = loginSocket;
 		
 		Operacao operacao = operacoes.get(entrada);
 		if(operacao == null) {
@@ -82,9 +103,7 @@ public class Cliente {
 		
 		if(operacao instanceof OperacaoUsuario) {
 			socket = loginSocket;
-		} else {
-			socket = syncSocket;
-		}
+		} 
 		
 		System.out.println("Sub Operações Disponíveis: ");
 		
@@ -101,12 +120,35 @@ public class Cliente {
 	}
 
 	/**
-	 * Constroi as operações disponíveis para o usuário
+	 * Constroi as operações disponíveis para o usuário antes do login
 	 */
-	private static void construirOperacoes() {
+	private static void construirOperacoesAntesLogin() {
 		operacoes = new HashMap<String, Operacao>();
 		operacoes.put("usuario", new OperacaoUsuario());
+	}
+	
+	/**
+	 * Constroi as operações disponíveis para o usuário
+	 */
+	private static void construirOperacoesDepoisLogin() {
+		operacoes = new HashMap<String, Operacao>();
 		operacoes.put("arquivo", new OperacaoArquivo());
+	}
+
+	public static String getIPSYNC() {
+		return IPSYNC;
+	}
+
+	public static void setIPSYNC(String iPSYNC) {
+		IPSYNC = iPSYNC;
+	}
+
+	public static SocketMulticast getMultiSocket() {
+		return multiSocket;
+	}
+
+	public static void setMultiSocket(SocketMulticast multiSocket) {
+		Cliente.multiSocket = multiSocket;
 	}
 
 }

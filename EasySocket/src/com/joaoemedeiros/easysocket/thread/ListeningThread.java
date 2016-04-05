@@ -35,6 +35,7 @@ public class ListeningThread extends Thread {
             try {
                 Socket socket;
                 socket = serverSocket.accept();
+                System.out.println("Conexão de IP: " + socket.getInetAddress().getHostAddress() + " recebida com sucesso!");
                 new ConnectionThread(socket, socketServer).start();
             } catch (IOException e) {
                 e.printStackTrace();

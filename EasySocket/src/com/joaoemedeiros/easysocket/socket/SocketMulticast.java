@@ -4,6 +4,7 @@
 package com.joaoemedeiros.easysocket.socket;
 
 import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
@@ -30,6 +31,10 @@ public class SocketMulticast {
 			throw new EasySocketException(e.getMessage());
 		}
 		
+	}
+	
+	public void send(DatagramPacket data) throws IOException {
+		socket.send(data);
 	}
 
 }

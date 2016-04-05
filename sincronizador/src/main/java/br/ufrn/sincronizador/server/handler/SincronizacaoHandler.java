@@ -14,6 +14,8 @@ import com.joaoemedeiros.easysocket.utils.Resposta;
 import com.joaoemedeiros.easysocket.utils.Solicitacao;
 
 import br.ufrn.pd.dominio.Arquivo;
+import br.ufrn.sincronizador.client.Cliente;
+import br.ufrn.sincronizador.sync.SyncThread;
 
 /**
  * @author joao
@@ -29,6 +31,13 @@ public class SincronizacaoHandler extends MessageHandler {
 		
 		if(solicitacao.getOperacao().equalsIgnoreCase(Operations.ENVIARARQUIVO)) {
 			resposta = salvarArquivo();
+		} else if(solicitacao.getOperacao().equalsIgnoreCase(Operations.SINCRONIZAR)) {
+			String ip = (String) solicitacao.getObjeto();
+			
+			Cliente.setIPSYNC(ip);
+			SyncThread.getInstance().start();
+			
+			resposta = Resposta.criarMensagemSucesso("Sincronização iniciada com sucesso!", null);
 		}
 		
 		enviarResposta(resposta);
