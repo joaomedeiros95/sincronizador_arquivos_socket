@@ -32,4 +32,16 @@ public abstract class Operacao {
 		
 		System.out.println(resposta.getMensagem());
 	}
+	
+	protected boolean getResultadoResposta(SocketClient client) throws EasySocketException {
+		Resposta resposta = client.readObject();
+		
+		if(!resposta.isResultado()) {
+			System.out.println("Ocorreu um erro ao realizar sua operação!");
+		}
+		
+		System.out.println(resposta.getMensagem());	
+		
+		return resposta.isResultado();
+	}
 }

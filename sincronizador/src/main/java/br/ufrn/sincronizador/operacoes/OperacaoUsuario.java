@@ -3,6 +3,7 @@
  */
 package br.ufrn.sincronizador.operacoes;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -17,6 +18,7 @@ import com.joaoemedeiros.easysocket.utils.Solicitacao;
 
 import br.ufrn.pd.dominio.LoginUsuario;
 import br.ufrn.pd.dominio.Usuario;
+import br.ufrn.sincronizador.arquivos.ManipuladorArquivo;
 import br.ufrn.sincronizador.input.StringInput;
 
 /**
@@ -37,27 +39,47 @@ public class OperacaoUsuario extends Operacao {
 		if(subOperacao == CRIAR) {
 			solicitacao.setOperacao(Operations.CADASTRARUSUARIO);
 			solicitacao.setObjeto(criarUsuario());
+			
+			enviar(client, solicitacao);
+			imprimirResposta(client);
 		} else if (subOperacao == LOGAR) {
-			solicitacao.setOperacao(Operations.LOGIN);
+			boolean enviar = false;
+			
 			try {
-				solicitacao.setObjeto(logar());
-			} catch (SocketException e) {
-				System.out.println("Ocorreu um erro ao recuperar suas informações de login.");
-				return;
-			} catch (UnknownHostException e) {
-				System.out.println("Ocorreu um erro ao recuperar suas informações de login.");
+				ManipuladorArquivo.criarArquivo();
+				
+				String email = ManipuladorArquivo.getString();
+				Usuario usuario = null;
+				
+				if(email == null) {
+					usuario = (Usuario) logar();
+					solicitacao.setOperacao(Operations.LOGIN);
+					solicitacao.setObjeto(usuario);
+					enviar = true;
+				}
+				
+				if(enviar) {
+					enviar(client, solicitacao);
+					if(getResultadoResposta(client)) {
+						ManipuladorArquivo.putString(usuario.getEmail());
+					}
+				} else {
+					System.out.println("Usuário " + email + " já logado!");
+				}
+			} catch (IOException e) {
+				System.out.println("Ocorreu um erro ao fazer login!");
 				return;
 			}
+			
 		} else {
 			System.out.println("Digite uma subOperação válida");
 			return;
 		}
 		
-		enviar(client, solicitacao);
-		imprimirResposta(client);
+		
 	}
 
-	private Object logar() throws SocketException, UnknownHostException {
+	private Object logar() {
 		String email;
 		String senha;
 		

@@ -8,8 +8,10 @@ import java.util.Map;
 
 import com.joaoemedeiros.easysocket.exception.EasySocketException;
 import com.joaoemedeiros.easysocket.socket.SocketClient;
+import com.joaoemedeiros.easysocket.socket.SocketMulticast;
 import com.joaoemedeiros.easysocket.utils.Services;
 
+import br.ufrn.sincronizador.client.handler.MulticastHandlerImpl;
 import br.ufrn.sincronizador.input.StringInput;
 import br.ufrn.sincronizador.operacoes.Operacao;
 import br.ufrn.sincronizador.operacoes.OperacaoArquivo;
@@ -22,13 +24,16 @@ import br.ufrn.sincronizador.server.Servidor;
  */
 public class Cliente {
 	
-	private static final String SERVIDORLOGIN = "localhost";
-	private static final String SERVIDORSYNC = "localhost";
+	public static final String SERVIDORLOGIN = "localhost";
+	public static final String SERVIDORSYNC = "localhost";
+	public static final String MULTICASTSERVER = "239.0.0.1";
+	
 	private static Map<String, Operacao> operacoes;
 	private static boolean finish;
 	
 	private static SocketClient loginSocket;
 	private static SocketClient syncSocket;
+	private static SocketMulticast multiSocket;
 	
 	public static void main(String[] args) {
 		construirOperacoes();
@@ -37,6 +42,7 @@ public class Cliente {
 			Servidor.criarServidor();
 			loginSocket = new SocketClient(SERVIDORLOGIN, Services.LOGINSERVICE);
 			syncSocket = new SocketClient(SERVIDORSYNC, Services.SYNCSERVICE);
+//			multiSocket = new SocketMulticast(MULTICASTSERVER, Services.MULTISERVICE, new MulticastHandlerImpl());
 			
 			while(!finish) {
 				solicitarOperacao();
