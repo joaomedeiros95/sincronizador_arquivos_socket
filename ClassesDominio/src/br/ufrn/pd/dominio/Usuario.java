@@ -19,6 +19,7 @@ public class Usuario implements Serializable {
 	private String email;
 	private String senha;
 	private Date dataCadastro;
+	private LoginUsuario login;
 	
 	public Integer getId() {
 		return id;
@@ -49,6 +50,12 @@ public class Usuario implements Serializable {
 	}
 	public void setDataCadastro(Date dataCadastro) {
 		this.dataCadastro = dataCadastro;
+	}
+	public LoginUsuario getLogin() {
+		return login;
+	}
+	public void setLogin(LoginUsuario login) {
+		this.login = login;
 	}
 	
 }

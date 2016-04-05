@@ -42,7 +42,7 @@ public class UsuarioHandler extends MessageHandler {
 
 	private Resposta loginUsuario() throws SQLException {
 		Usuario usuario = (Usuario) solicitacao.getObjeto();
-		boolean correto = new UsuarioDAO().verificarLogin(usuario.getEmail(), usuario.getSenha());
+		boolean correto = new UsuarioDAO().verificarLogin(usuario);
 		
 		if(correto) {
 			return Resposta.criarMensagemSucesso("Usuário logado com sucesso!", null);

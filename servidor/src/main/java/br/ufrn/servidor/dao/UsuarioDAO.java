@@ -48,16 +48,16 @@ public class UsuarioDAO {
 	 * 			false -> caso contrário
 	 * @throws SQLException 
 	 */
-	public boolean verificarLogin(String email, String senha) throws SQLException {
+	public boolean verificarLogin(Usuario usuario) throws SQLException {
 		Connection conexao = ConnectionFactory.getConexao();
 		PreparedStatement stmt = null;
 		try {
-			String sql = "SELECT email FROM usuario " 
+			String sql = "SELECT id_usuario, email FROM usuario " 
 					+ "WHERE email = ? AND senha = ?";
 			
 			stmt = conexao.prepareStatement(sql);
-			stmt.setString(1, email);
-			stmt.setString(2, senha);
+			stmt.setString(1, usuario.getEmail());
+			stmt.setString(2, usuario.getSenha());
 			
 			ResultSet set = stmt.executeQuery();
 			
@@ -68,6 +68,42 @@ public class UsuarioDAO {
 			}
 			conexao.close();
 		}
+	}
+
+	@Deprecated
+	private boolean inserirLoginInfo(Usuario usuario) throws SQLException {
+		Connection conexao = ConnectionFactory.getConexao();
+		String insertSql = "INSERT INTO login_usuario(id_usuario, ip, ultima_entrada, mac) " 
+					+ "SELECT ?, ?, ?, ? "
+					+ "FROM login_usuario "
+					+ "WHERE NOT EXISTS (SELECT 1 FROM login_usuario WHERE mac = ?);";
+		
+		PreparedStatement stmt = conexao.prepareStatement(insertSql);
+		stmt.setInt(1, usuario.getId());
+		stmt.setString(2, usuario.getLogin().getIp());
+		stmt.setDate(3, new Date(Calendar.getInstance().getTimeInMillis()));
+		stmt.setString(4, usuario.getLogin().getMac());
+		stmt.setString(5, usuario.getLogin().getMac());
+		System.out.println(stmt);
+		stmt.execute();
+		stmt.close();
+		
+		String updateSql = "UPDATE login_usuario SET ip = ?, ultima_entrada = ? "
+					+ "WHERE mac = ?;";
+		
+		PreparedStatement stmt2 = conexao.prepareStatement(updateSql);
+		stmt2.setString(1, usuario.getLogin().getIp());
+		stmt2.setDate(2, new Date(Calendar.getInstance().getTimeInMillis()));
+		stmt2.setString(3, usuario.getLogin().getMac());
+		System.out.println(stmt2);
+		stmt2.execute();
+		stmt2.close();
+		
+		
+		conexao.close();
+		
+		
+		return true;
 	}
 
 }
