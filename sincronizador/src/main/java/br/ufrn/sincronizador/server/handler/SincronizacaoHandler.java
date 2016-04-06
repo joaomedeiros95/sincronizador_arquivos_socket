@@ -6,6 +6,7 @@ package br.ufrn.sincronizador.server.handler;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.joaoemedeiros.easysocket.handler.Connection;
 import com.joaoemedeiros.easysocket.handler.MessageHandler;
@@ -14,8 +15,6 @@ import com.joaoemedeiros.easysocket.utils.Resposta;
 import com.joaoemedeiros.easysocket.utils.Solicitacao;
 
 import br.ufrn.pd.dominio.Arquivo;
-import br.ufrn.sincronizador.client.Cliente;
-import br.ufrn.sincronizador.sync.SyncThread;
 
 /**
  * @author joao
@@ -31,13 +30,11 @@ public class SincronizacaoHandler extends MessageHandler {
 		
 		if(solicitacao.getOperacao().equalsIgnoreCase(Operations.ENVIARARQUIVO)) {
 			resposta = salvarArquivo();
-		} else if(solicitacao.getOperacao().equalsIgnoreCase(Operations.SINCRONIZAR)) {
-			String ip = (String) solicitacao.getObjeto();
-			
-			Cliente.setIPSYNC(ip);
-			SyncThread.getInstance().start();
-			
+		} else if(solicitacao.getOperacao().equalsIgnoreCase(Operations.CONECTAR)) {
 			resposta = Resposta.criarMensagemSucesso("Sincronização iniciada com sucesso!", null);
+		} else if(solicitacao.getOperacao().equalsIgnoreCase(Operations.SOLICITARLISTA)) {
+			//TODO: Implementar a operação de ler a lista de arquivos
+			resposta = Resposta.criarMensagemSucesso("", new ArrayList<Object>());
 		}
 		
 		enviarResposta(resposta);

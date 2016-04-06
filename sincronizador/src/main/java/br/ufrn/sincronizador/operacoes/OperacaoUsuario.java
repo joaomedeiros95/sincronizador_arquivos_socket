@@ -48,7 +48,7 @@ public class OperacaoUsuario extends Operacao {
 			try {
 				ManipuladorArquivo.criarArquivo();
 				
-				String email = ManipuladorArquivo.getString();
+				String email = ManipuladorArquivo.getLogin();
 				Usuario usuario = null;
 				
 				if(email == null) {
@@ -62,6 +62,9 @@ public class OperacaoUsuario extends Operacao {
 					enviar(client, solicitacao);
 					if(getResultadoResposta(client)) {
 						ManipuladorArquivo.putString(usuario.getEmail());
+						
+						String caminho = input.receiveInput("Digite o caminho da pasta que deseja sincronizar: ");
+						ManipuladorArquivo.putString(caminho);
 					}
 				} else {
 					System.out.println("Usuário " + email + " já logado!");

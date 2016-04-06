@@ -27,7 +27,6 @@ public class Cliente {
 	
 	public static final String SERVIDORLOGIN = "localhost";
 	public static final String MULTICASTSERVER = "239.0.0.1";
-	private static String IPSYNC; 
 	
 	private static Map<String, Operacao> operacoes;
 	private static boolean finish;
@@ -61,7 +60,7 @@ public class Cliente {
 
 	private static boolean verificarLogin() throws IOException {
 		ManipuladorArquivo.criarArquivo();
-		String email = ManipuladorArquivo.getString();
+		String email = ManipuladorArquivo.getLogin();
 		
 		if(email != null) {
 			System.out.println("Usuário " + email + " logado ao sistema!");
@@ -133,14 +132,6 @@ public class Cliente {
 	private static void construirOperacoesDepoisLogin() {
 		operacoes = new HashMap<String, Operacao>();
 		operacoes.put("arquivo", new OperacaoArquivo());
-	}
-
-	public static String getIPSYNC() {
-		return IPSYNC;
-	}
-
-	public static void setIPSYNC(String iPSYNC) {
-		IPSYNC = iPSYNC;
 	}
 
 	public static SocketMulticast getMultiSocket() {

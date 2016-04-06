@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author joao
@@ -24,12 +26,25 @@ public class ManipuladorArquivo {
 		out.close();
 	}
 	
-	public static String getString() throws IOException {
+	private static String getLinha(Integer linhaDesejada) throws IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(ARQUIVO));
-		String linha = reader.readLine();
+		List<String> linhas = new ArrayList<String>();
+		
+		String temp;
+		while((temp = reader.readLine()) != null) {
+			linhas.add(temp);
+		}
 		reader.close();
 		
-		return linha;
+		return linhas.get(linhaDesejada);
+	}
+	
+	public static String getLogin() throws IOException {
+		return getLinha(0);
+	}
+	
+	public static String getCaminho() throws IOException {
+		return getLinha(1);
 	}
 	
 	public static void criarArquivo() throws IOException {

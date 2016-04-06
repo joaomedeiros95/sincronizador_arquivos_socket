@@ -5,6 +5,7 @@ package br.ufrn.sincronizador.operacoes;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,12 +54,12 @@ public class OperacaoArquivo extends Operacao {
 			imprimirResposta(client);
 		} else if (subOperacao == SINCRONIZAR) {
 			try {
-				UDPUtils.sendDatagram(ManipuladorArquivo.getString(), Cliente.MULTICASTSERVER, Services.MULTISERVICE, Cliente.getMultiSocket());
+				Servidor.criarServidor(Services.SYNCSERVICE, new SincronizacaoHandler());
+				UDPUtils.sendDatagram(InetAddress.getLocalHost().getHostName() + ";" + ManipuladorArquivo.getLogin(), Cliente.MULTICASTSERVER, Services.MULTISERVICE, Cliente.getMultiSocket());
 			} catch (IOException e) {
 				System.out.println("Ocorreu um erro ao processar sua operação!");
 			}
 			
-			Servidor.criarServidor(Services.SYNCSERVICE, new SincronizacaoHandler());
 		}
 		
 	}

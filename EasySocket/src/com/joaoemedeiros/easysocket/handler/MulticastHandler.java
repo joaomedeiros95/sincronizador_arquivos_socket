@@ -16,6 +16,6 @@ public abstract class MulticastHandler {
 	protected MulticastSocket conexao;
 	protected Solicitacao solicitacao;
 	
-	public abstract void onReceive(MulticastSocket connection, Object objeto);
+	public abstract void onReceive(MulticastSocket connection, Object objeto, String ip);
 	
 }

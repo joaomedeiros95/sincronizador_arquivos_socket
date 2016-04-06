@@ -38,8 +38,9 @@ public class MulticastThread extends Thread {
 				DatagramPacket pkg = new DatagramPacket(rec, rec.length); 
 				socket.receive(pkg);
 				String data = new String(pkg.getData());
+				String ip = pkg.getAddress().getHostAddress();
 				
-				handler.onReceive(socket, data);
+				handler.onReceive(socket, data, ip);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
