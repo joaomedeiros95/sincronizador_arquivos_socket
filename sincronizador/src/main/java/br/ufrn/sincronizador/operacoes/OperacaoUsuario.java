@@ -20,6 +20,7 @@ import br.ufrn.pd.dominio.LoginUsuario;
 import br.ufrn.pd.dominio.Usuario;
 import br.ufrn.sincronizador.arquivos.ManipuladorArquivo;
 import br.ufrn.sincronizador.input.StringInput;
+import br.ufrn.sincronizador.utils.Session;
 
 /**
  * @author joao
@@ -63,12 +64,11 @@ public class OperacaoUsuario extends Operacao {
 					if(getResultadoResposta(client)) {
 						ManipuladorArquivo.putString(usuario.getEmail());
 						
-						String caminho = input.receiveInput("Digite o caminho da pasta que deseja sincronizar: ");
-						ManipuladorArquivo.putString(caminho);
 					}
 				} else {
 					System.out.println("Usuário " + email + " já logado!");
 				}
+				
 			} catch (IOException e) {
 				System.out.println("Ocorreu um erro ao fazer login!");
 				return;

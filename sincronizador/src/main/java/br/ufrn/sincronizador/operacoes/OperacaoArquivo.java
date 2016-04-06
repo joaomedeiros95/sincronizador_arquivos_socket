@@ -3,13 +3,10 @@
  */
 package br.ufrn.sincronizador.operacoes;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.io.FileUtils;
 
 import com.joaoemedeiros.easysocket.exception.EasySocketException;
 import com.joaoemedeiros.easysocket.socket.SocketClient;
@@ -24,6 +21,7 @@ import br.ufrn.sincronizador.input.StringInput;
 import br.ufrn.sincronizador.server.Servidor;
 import br.ufrn.sincronizador.server.handler.SincronizacaoHandler;
 import br.ufrn.sincronizador.sync.UDPUtils;
+import br.ufrn.sincronizador.utils.ArquivoUtils;
 
 /**
  * @author joao
@@ -67,24 +65,11 @@ public class OperacaoArquivo extends Operacao {
 	private Arquivo pegarArquivo() {
 		String caminho = "";
 		String nomeArquivo = "";
-		Arquivo arquivo = null;
 		
 		caminho = input.receiveInput("Digite o caminho do arquivo: ");
 		nomeArquivo = input.receiveInput("Digite o nome do arquivo (com extensão): ");
 		
-		File file = new File(caminho + nomeArquivo);
-		try {
-			byte[] array = FileUtils.readFileToByteArray(file);
-			arquivo = new Arquivo();
-			arquivo.setCaminho(caminho + "teste/");
-			arquivo.setArquivo(array);
-			arquivo.setNome(nomeArquivo);
-		} catch (IOException e) {
-			System.out.println("Ocorreu um erro ao ler o arquivo");
-			e.printStackTrace();
-		}
-		
-		return arquivo;
+		return ArquivoUtils.getArquivo(caminho, nomeArquivo);
 	}
 
 	@Override

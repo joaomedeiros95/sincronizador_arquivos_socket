@@ -3,7 +3,13 @@
  */
 package br.ufrn.sincronizador.sync;
 
+import com.joaoemedeiros.easysocket.exception.EasySocketException;
 import com.joaoemedeiros.easysocket.socket.SocketClient;
+import com.joaoemedeiros.easysocket.utils.Operations;
+import com.joaoemedeiros.easysocket.utils.Services;
+import com.joaoemedeiros.easysocket.utils.Solicitacao;
+
+import br.ufrn.sincronizador.operacoes.OperacaoArquivo;
 
 /**
  * @author joao
@@ -11,17 +17,28 @@ import com.joaoemedeiros.easysocket.socket.SocketClient;
  */
 public class SyncMaster extends Thread {
 	
-	private String ip;
 	private SocketClient client;
 
-	public SyncMaster(String ip) {
+	public SyncMaster(String ip) throws EasySocketException {
 		super();
-		this.ip = ip;
+		client = new SocketClient(ip, Services.SYNCSERVICE);
 	}
 	
 	@Override
 	public void run() {
 		while(true) {
+			try {
+				new OperacaoArquivo().executar(client, OperacaoArquivo.ENVIARARQUIVO);
+				
+				Solicitacao solicitacao = new Solicitacao();
+				solicitacao.setOperacao(Operations.SOLICITARARQUIVO);
+				solicitacao.setObjeto("/BparaA.txt");
+				
+				client.enviarObjeto(solicitacao);
+				System.out.println(client.readObject().getMensagem());
+			} catch (EasySocketException e) {
+				e.printStackTrace();
+			}
 			
 			
 			dormir();

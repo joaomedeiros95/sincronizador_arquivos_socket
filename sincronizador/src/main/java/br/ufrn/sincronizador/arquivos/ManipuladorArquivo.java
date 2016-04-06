@@ -6,6 +6,7 @@ package br.ufrn.sincronizador.arquivos;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class ManipuladorArquivo {
 	private static final String ARQUIVO = "login.txt";
 	
 	public static void putString(String linha) throws IOException {
-		PrintWriter out = new PrintWriter(ARQUIVO);
+		PrintWriter out = new PrintWriter(new FileWriter(ARQUIVO, true));
 		out.println(linha);
 		out.flush();
 		out.close();
@@ -36,16 +37,16 @@ public class ManipuladorArquivo {
 		}
 		reader.close();
 		
-		return linhas.get(linhaDesejada);
+		return linhas.isEmpty() ? null : linhas.get(linhaDesejada);
 	}
 	
 	public static String getLogin() throws IOException {
 		return getLinha(0);
 	}
 	
-	public static String getCaminho() throws IOException {
-		return getLinha(1);
-	}
+//	public static String getCaminho() throws IOException {
+//		return getLinha(1);
+//	}
 	
 	public static void criarArquivo() throws IOException {
 		File file = new File(ARQUIVO);

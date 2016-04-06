@@ -18,6 +18,7 @@ import br.ufrn.sincronizador.input.StringInput;
 import br.ufrn.sincronizador.operacoes.Operacao;
 import br.ufrn.sincronizador.operacoes.OperacaoArquivo;
 import br.ufrn.sincronizador.operacoes.OperacaoUsuario;
+import br.ufrn.sincronizador.utils.Session;
 
 /**
  * @author joao
@@ -44,6 +45,8 @@ public class Cliente {
 				solicitarOperacao();
 			}
 			
+			solicitarCaminhoRaiz();
+			
 			construirOperacoesDepoisLogin();
 			multiSocket = new SocketMulticast(MULTICASTSERVER, Services.MULTISERVICE, new MulticastHandlerImpl());
 			
@@ -56,6 +59,13 @@ public class Cliente {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static void solicitarCaminhoRaiz() {
+		StringInput input = new StringInput();
+		String caminho = input.receiveInput("Digite o caminho da pasta que deseja sincronizar: ");
+		Session.getInstance().putValue("caminho", caminho);
+		//TODO: ManipuladorArquivo.putString(caminho);
 	}
 
 	private static boolean verificarLogin() throws IOException {

@@ -15,6 +15,7 @@ import com.joaoemedeiros.easysocket.utils.Resposta;
 import com.joaoemedeiros.easysocket.utils.Solicitacao;
 
 import br.ufrn.pd.dominio.Arquivo;
+import br.ufrn.sincronizador.utils.ArquivoUtils;
 
 /**
  * @author joao
@@ -28,16 +29,25 @@ public class SincronizacaoHandler extends MessageHandler {
 		super.solicitacao = solicitacao;
 		Resposta resposta = null;
 		
-		if(solicitacao.getOperacao().equalsIgnoreCase(Operations.ENVIARARQUIVO)) {
-			resposta = salvarArquivo();
-		} else if(solicitacao.getOperacao().equalsIgnoreCase(Operations.CONECTAR)) {
+		if(solicitacao.getOperacao().equalsIgnoreCase(Operations.CONECTAR)) {
 			resposta = Resposta.criarMensagemSucesso("Sincronização iniciada com sucesso!", null);
+		} else if(solicitacao.getOperacao().equalsIgnoreCase(Operations.ENVIARARQUIVO)) {
+			resposta = salvarArquivo();
+		} else if(solicitacao.getOperacao().equalsIgnoreCase(Operations.SOLICITARARQUIVO)) {
+			String caminho = (String) solicitacao.getObjeto();
+			Arquivo arquivo = pegarArquivo(caminho);
+			
+			resposta = Resposta.criarMensagemSucesso("", arquivo);
 		} else if(solicitacao.getOperacao().equalsIgnoreCase(Operations.SOLICITARLISTA)) {
 			//TODO: Implementar a operação de ler a lista de arquivos
 			resposta = Resposta.criarMensagemSucesso("", new ArrayList<Object>());
-		}
+		} 
 		
 		enviarResposta(resposta);
+	}
+
+	private Arquivo pegarArquivo(String caminho) {
+		return ArquivoUtils.getArquivo(caminho);
 	}
 
 	private Resposta salvarArquivo() {
