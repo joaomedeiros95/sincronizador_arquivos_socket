@@ -6,7 +6,6 @@ package br.ufrn.sincronizador.server.handler;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import com.joaoemedeiros.easysocket.handler.Connection;
 import com.joaoemedeiros.easysocket.handler.MessageHandler;
@@ -16,6 +15,10 @@ import com.joaoemedeiros.easysocket.utils.Solicitacao;
 
 import br.ufrn.pd.dominio.Arquivo;
 import br.ufrn.sincronizador.utils.ArquivoUtils;
+import br.ufrn.sincronizador.utils.Session;
+import br.ufrn.sincronizador.utils.comparador.CriadorDiretorio;
+import br.ufrn.sincronizador.utils.comparador.busca.Buscador;
+import br.ufrn.sincronizador.utils.comparador.entidades.Arquivos;
 
 /**
  * @author joao
@@ -39,8 +42,13 @@ public class SincronizacaoHandler extends MessageHandler {
 			
 			resposta = Resposta.criarMensagemSucesso("", arquivo);
 		} else if(solicitacao.getOperacao().equalsIgnoreCase(Operations.SOLICITARLISTA)) {
-			//TODO: Implementar a operação de ler a lista de arquivos
-			resposta = Resposta.criarMensagemSucesso("", new ArrayList<Object>());
+			Buscador b = new Buscador();
+			Arquivos arq = new Arquivos (Session.getInstance().getValue("caminho"));
+			
+			b.buscar(arq);
+			b.removerArquivosDaPastaNegra(arq.getArquivos(), Session.getInstance().getValue("caminho") + "/Black Paste");
+			
+			resposta = Resposta.criarMensagemSucesso("", arq);
 		} 
 		
 		enviarResposta(resposta);
@@ -55,6 +63,7 @@ public class SincronizacaoHandler extends MessageHandler {
 		
 		FileOutputStream output;
 		try {
+			CriadorDiretorio.criarDiretorio(arquivo.getCaminho(), arquivo.getNome());
 			output = new FileOutputStream(arquivo.getCaminho() + arquivo.getNome());
 			output.write(arquivo.getArquivo());
 			output.close();
