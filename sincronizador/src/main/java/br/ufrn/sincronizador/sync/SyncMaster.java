@@ -34,17 +34,15 @@ public class SyncMaster extends Thread {
 	
 	@Override
 	public void run() {
-		while(true) {
-			try {
-				compararListas();
-				
-			} catch (EasySocketException e) {
-				e.printStackTrace();
-			}
+		try {
+			compararListas();
 			
-			
-			dormir();
+		} catch (EasySocketException e) {
+			e.printStackTrace();
 		}
+		
+		
+		dormir();
 	}
 	
 	private void compararListas() throws EasySocketException {
@@ -55,6 +53,8 @@ public class SyncMaster extends Thread {
 		
 		Arquivos arquivosRecebidos = (Arquivos) client.readObject().getRetorno();
 		Arquivos arquivosLocais = pegarListaLocal();
+		System.out.println(arquivosRecebidos);
+		System.out.println(arquivosLocais);
 
 		Comparador comparador = new Comparador();
 		List<DadosArquivo> arquivosAEnviar = comparador.compararListasArquivos(arquivosLocais, arquivosRecebidos);
@@ -67,7 +67,7 @@ public class SyncMaster extends Thread {
 		for(DadosArquivo dado : arquivosAEnviar) {
 			Solicitacao solicitacao = new Solicitacao();
 			solicitacao.setOperacao(Operations.ENVIARARQUIVO);
-			solicitacao.setObjeto(ArquivoUtils.getArquivo(dado.getPath(), dado.getName()));
+			solicitacao.setObjeto(ArquivoUtils.getArquivo(dado.getPath()));
 			
 			client.enviarObjeto(solicitacao);
 			

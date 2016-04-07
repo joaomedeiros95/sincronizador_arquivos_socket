@@ -30,7 +30,6 @@ public class Producer extends Thread{
 	                    	out.writeUTF(f.getAbsolutePath() + ">" + f.getName() +  ">" + f.getTotalSpace() + ">"+ f.lastModified() );
 		                    out.flush();
 		                    sleep(500);
-		               		                    		                    		                    
 		                } 
 		                else if(f.isDirectory()){ 
 		                   // System.out.println("Diretorio: " + f.getName()); 

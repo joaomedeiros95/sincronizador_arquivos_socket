@@ -38,10 +38,10 @@ public class ArquivoUtils {
 		Arquivo arquivo = null;
 		
 		try {
-			File file = new File(Session.getInstance().getValue("caminho") + fullCaminho);
+			File file = new File(fullCaminho);
 			byte[] array = FileUtils.readFileToByteArray(file);
 			arquivo = new Arquivo();
-			arquivo.setCaminho(fullCaminho.replace(file.getName(), ""));
+			arquivo.setCaminho(fullCaminho.replace(file.getName(), "").replace(Session.getInstance().getValue("caminho"), ""));
 			arquivo.setArquivo(array);
 			arquivo.setNome(file.getName());
 		} catch (IOException e) {

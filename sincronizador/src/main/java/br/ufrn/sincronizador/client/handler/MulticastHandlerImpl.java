@@ -31,7 +31,7 @@ public class MulticastHandlerImpl extends MulticastHandler {
 		String[] infos = recebido.split(";");
 		
 		try {
-			if(infos[0].trim().equalsIgnoreCase(InetAddress.getLocalHost().getHostName())) {
+			if(!infos[0].trim().equalsIgnoreCase(InetAddress.getLocalHost().getHostName())) {
 				if(infos[1].trim().equalsIgnoreCase(ManipuladorArquivo.getLogin())) {
 					conectarClientes(ip);
 				}

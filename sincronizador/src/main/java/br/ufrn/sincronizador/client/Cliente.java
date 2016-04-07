@@ -27,7 +27,7 @@ import br.ufrn.sincronizador.utils.Session;
 public class Cliente {
 	
 	public static final String SERVIDORLOGIN = "localhost";
-	public static final String MULTICASTSERVER = "239.0.0.1";
+	public static final String MULTICASTSERVER = "239.10.10.15";
 	
 	private static Map<String, Operacao> operacoes;
 	private static boolean finish;
