@@ -28,7 +28,7 @@ public class Arquivo implements Serializable {
 	}
 
 	public String getCaminho() {
-		return caminho;
+		return caminho.replace("/", "\\");
 	}
 
 	public void setCaminho(String caminho) {

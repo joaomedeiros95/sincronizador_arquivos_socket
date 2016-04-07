@@ -63,8 +63,8 @@ public class SincronizacaoHandler extends MessageHandler {
 		
 		FileOutputStream output;
 		try {
-			CriadorDiretorio.criarDiretorio(arquivo.getCaminho(), arquivo.getNome());
-			output = new FileOutputStream(arquivo.getCaminho() + arquivo.getNome());
+			CriadorDiretorio.criarDiretorio(Session.getInstance().getValue("caminho") + arquivo.getCaminho(), arquivo.getNome());
+			output = new FileOutputStream(Session.getInstance().getValue("caminho") + arquivo.getCaminho() + arquivo.getNome());
 			output.write(arquivo.getArquivo());
 			output.close();
 		} catch (FileNotFoundException e) {
