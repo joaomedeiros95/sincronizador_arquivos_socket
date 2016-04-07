@@ -45,7 +45,6 @@ public class SyncMaster extends Thread {
 			} catch (EasySocketException e) {
 				e.printStackTrace();
 			}
-			dormir();
 		}
 	}
 	
@@ -124,15 +123,6 @@ public class SyncMaster extends Thread {
 		b.removerArquivosDaPastaNegra(arq.getArquivos(), Session.getInstance().getValue("caminho") + "/Black Paste");
 		
 		return arq;
-	}
-
-	private void dormir() {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 }

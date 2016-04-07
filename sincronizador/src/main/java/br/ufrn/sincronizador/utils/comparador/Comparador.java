@@ -11,10 +11,10 @@ public class Comparador {
 		String c1 = caminho1;
 		String c2 = caminho2;
 		
-		c1 = c1.substring(quant1);
-		c2 = c2.substring(quant2);
+		c1 = c1.substring(quant1).replace("\\", "/");
+		c2 = c2.substring(quant2).replace("\\", "/");
 		
-		if(c1 == c2){
+		if(c1.equalsIgnoreCase(c2)){
 			return true;
 		}
 		else{
@@ -48,13 +48,9 @@ public class Comparador {
 	}
 	
 	public boolean compararArquivos(DadosArquivo arquivoLocal, DadosArquivo arquivoRecebido) {
-		if(arquivoLocal.getConteudo() != arquivoRecebido.getConteudo()) {
+		if(arquivoLocal.getLastModification() > arquivoRecebido.getLastModification()) {
 			return true;
-		} else {
-			if(arquivoLocal.getLastModification() > arquivoRecebido.getLastModification()) {
-				return true;
-			} 
-		}
+		} 
 		
 		return false;
 	}
