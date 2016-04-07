@@ -3,6 +3,8 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.PipedOutputStream;
 
+import org.apache.commons.io.FileUtils;
+
 public class Producer extends Thread{
 	private DataOutputStream out;
 	private PipedOutputStream os;
@@ -27,7 +29,8 @@ public class Producer extends Thread{
 		                File f = arquivos[i]; 
 		            
 		                if(f.isFile()){ 
-	                    	out.writeUTF(f.getAbsolutePath() + ">" + f.getName() +  ">" + f.getTotalSpace() + ">"+ f.lastModified() );
+	                    	out.writeUTF(f.getAbsolutePath() + ">" + f.getName() +  ">" + f.getTotalSpace() + ">"+ f.lastModified() 
+	                    					+ ">" + FileUtils.readFileToByteArray(f) );
 		                    out.flush();
 		                    sleep(500);
 		                } 

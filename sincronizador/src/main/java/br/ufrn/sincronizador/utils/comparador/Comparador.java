@@ -31,13 +31,11 @@ public class Comparador {
 		
 		for(int i = 0; i < arquivosLocal.getArquivos().size(); i++){
 			for(int j = 0; j < arquivosRecebidos.getArquivos().size(); j++){
-				adicionar = true;
 				if( compararCaminho(arquivosLocal.getArquivos().get(i).getPath(), arquivosRecebidos.getArquivos().get(j).getPath(), 
 						arquivosLocal.getTamanhoDiretorioRaiz(), arquivosRecebidos.getTamanhoDiretorioRaiz())){
 					
-					adicionar = false;
-					if(arquivosLocal.getArquivos().get(i).getLastModification() > arquivosRecebidos.getArquivos().get(j).getLastModification() ){
-						arquivosEnviar.add(arquivosLocal.getArquivos().get(i));
+					if(!compararArquivos(arquivosLocal.getArquivos().get(i), arquivosRecebidos.getArquivos().get(j))) {
+						adicionar = false;
 					}
 				}
 			}
@@ -47,6 +45,18 @@ public class Comparador {
 		}
 			
 		return arquivosEnviar;		
+	}
+	
+	public boolean compararArquivos(DadosArquivo arquivoLocal, DadosArquivo arquivoRecebido) {
+		if(arquivoLocal.getConteudo() != arquivoRecebido.getConteudo()) {
+			return true;
+		} else {
+			if(arquivoLocal.getLastModification() > arquivoRecebido.getLastModification()) {
+				return true;
+			} 
+		}
+		
+		return false;
 	}
 	
 }

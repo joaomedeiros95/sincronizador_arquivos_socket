@@ -28,7 +28,12 @@ public class Arquivo implements Serializable {
 	}
 
 	public String getCaminho() {
-		return caminho.replace("/", "\\");
+		String so = System.getProperty("os.name");
+		if(so.contains("Windows")) {
+			return caminho.replace("/", "\\");
+		} else {
+			return caminho.replace("\\", "/");
+		}
 	}
 
 	public void setCaminho(String caminho) {

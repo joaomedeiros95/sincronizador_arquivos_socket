@@ -25,6 +25,8 @@ import br.ufrn.sincronizador.utils.comparador.entidades.Arquivos;
  *
  */
 public class SincronizacaoHandler extends MessageHandler {
+	
+	private static final String BLACKPASTE = "Black Paste";
 
 	@Override
 	public void onReceive(Connection conexao, Solicitacao solicitacao) {
@@ -46,7 +48,8 @@ public class SincronizacaoHandler extends MessageHandler {
 			Arquivos arq = new Arquivos (Session.getInstance().getValue("caminho"));
 			
 			b.buscar(arq);
-			b.removerArquivosDaPastaNegra(arq.getArquivos(), Session.getInstance().getValue("caminho") + "/Black Paste");
+			String barra = System.getProperty("os.name").contains("Windows") ? "\\" : "/";
+			b.removerArquivosDaPastaNegra(arq.getArquivos(), Session.getInstance().getValue("caminho") + barra + BLACKPASTE);
 			
 			resposta = Resposta.criarMensagemSucesso("", arq);
 		} 

@@ -28,7 +28,7 @@ public class Consumer extends Thread {
 					if (informacoes != null){
 						//System.out.println("informações:" + informacoes);
 						String infoArquivo[] = informacoes.split(">");
-						arquivos.add(new DadosArquivo(infoArquivo[0],infoArquivo[1], infoArquivo[2], infoArquivo[3]));						
+						arquivos.add(new DadosArquivo(infoArquivo[0],infoArquivo[1], infoArquivo[2], infoArquivo[3], infoArquivo[4].getBytes()));						
 					}
 					
 				} catch (IOException e) {
