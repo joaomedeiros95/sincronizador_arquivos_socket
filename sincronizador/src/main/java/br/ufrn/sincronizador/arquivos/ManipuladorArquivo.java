@@ -37,16 +37,16 @@ public class ManipuladorArquivo {
 		}
 		reader.close();
 		
-		return linhas.isEmpty() ? null : linhas.get(linhaDesejada);
+		return linhas.isEmpty() || linhas.size() <= linhaDesejada ? null : linhas.get(linhaDesejada);
 	}
 	
 	public static String getLogin() throws IOException {
 		return getLinha(0);
 	}
 	
-//	public static String getCaminho() throws IOException {
-//		return getLinha(1);
-//	}
+	public static String getCaminho() throws IOException {
+		return getLinha(1);
+	}
 	
 	public static void criarArquivo() throws IOException {
 		File file = new File(ARQUIVO);

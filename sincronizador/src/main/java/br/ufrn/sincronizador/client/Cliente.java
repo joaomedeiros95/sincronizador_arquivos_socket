@@ -61,11 +61,16 @@ public class Cliente {
 		}
 	}
 
-	private static void solicitarCaminhoRaiz() {
+	private static void solicitarCaminhoRaiz() throws IOException {
 		StringInput input = new StringInput();
-		String caminho = input.receiveInput("Digite o caminho da pasta que deseja sincronizar: ");
+		String caminho = ManipuladorArquivo.getCaminho();
+		if(caminho == null || caminho == "") {
+			caminho = input.receiveInput("Digite o caminho da pasta que deseja sincronizar: ");
+			ManipuladorArquivo.putString(caminho);
+		} else {
+			System.out.println("Caminho escolhido: " + caminho);
+		}
 		Session.getInstance().putValue("caminho", caminho);
-		//TODO: ManipuladorArquivo.putString(caminho);
 	}
 
 	private static boolean verificarLogin() throws IOException {
