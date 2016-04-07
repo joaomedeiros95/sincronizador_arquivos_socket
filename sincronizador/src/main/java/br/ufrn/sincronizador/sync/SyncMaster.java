@@ -120,7 +120,7 @@ public class SyncMaster extends Thread {
 		Arquivos arq = new Arquivos (Session.getInstance().getValue("caminho"));
 		
 		b.buscar(arq);
-		b.removerArquivosDaPastaNegra(arq.getArquivos(), Session.getInstance().getValue("caminho") + "/Black Paste");
+		b.removerArquivosDaPastaNegra(arq.getArquivos(), Session.getInstance().getValue("caminho") + "/Black Folder");
 		
 		return arq;
 	}

@@ -26,7 +26,7 @@ import br.ufrn.sincronizador.utils.comparador.entidades.Arquivos;
  */
 public class SincronizacaoHandler extends MessageHandler {
 	
-	private static final String BLACKPASTE = "Black Paste";
+	private static final String BLACKPASTE = "Black Folder";
 
 	@Override
 	public void onReceive(Connection conexao, Solicitacao solicitacao) {
